@@ -82,7 +82,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         flowLayout.itemSize =  CGSize(width: xWidth, height: height)
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 1.0
-        labelsCollection = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
+        labelsCollection = UICollectionView(frame: CGRect(x: 5, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
         labelsCollection.register(DynamicCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         labelsCollection.delegate = self
         labelsCollection.dataSource = self

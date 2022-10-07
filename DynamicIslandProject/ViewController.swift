@@ -16,7 +16,7 @@ class ViewController: UIViewController {
 
 
     @IBAction func actionDynamicIslandBtn(_ sender: UIButton) {
-        let dynamicView = DynamicIslandView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 38))
+        let dynamicView = DynamicIslandView(items: ["Standerd","Title 2"])
         self.view.addSubview(dynamicView)
         dynamicView.show()
     }
