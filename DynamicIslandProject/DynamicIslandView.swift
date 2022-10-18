@@ -76,7 +76,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         }
         //If list items is greater then one then width must m lesser
         if self.items.count > 1{
-            xWidth = 55
+            xWidth = 60
         }
         
         self.frame = CGRect(x:viewCenterX-width*half, y: -xTopMargin, width: width, height:height)
@@ -91,7 +91,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         flowLayout.itemSize =  CGSize(width: xWidth, height: height)
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 1.0
-        labelsCollection = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
+        labelsCollection = UICollectionView(frame: CGRect(x: 5, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
         labelsCollection.register(DynamicCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         labelsCollection.delegate = self
         labelsCollection.dataSource = self
@@ -138,7 +138,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             labelsCollection.frame.origin.y += height-10
             labelsCollection.frame.size.width = xWidth
             self.xTopMargin -= 22.1
-            self.dynamicIcland(width: self.xWidth, height:height*2, x: self.viewCenterX-(self.xWidth)*self.half, delay: 0.17) { [self] done in
+            self.dynamicIcland(width: self.xWidth+10, height:height*2, x: self.viewCenterX-(self.xWidth)*self.half, delay: 0.17) { [self] done in
                 dynamicIcland(width:126, height:height, x:self.viewCenterX-(126)*self.half, withHide: true, delay: 3.0) { done in
                     
                 }
@@ -202,6 +202,9 @@ class DynamicCollectionCell: UICollectionViewCell {
         lable.font = UIFont.systemFont(ofSize: 15.0, weight: .semibold)
         lable.text = "Shake to undo."
         lable.textAlignment = .center
+//        lable.backgroundColor = .green
+//        lable.layer.masksToBounds = true
+//        lable.layer.cornerRadius = 8
         self.addSubview(lable)
     }
 

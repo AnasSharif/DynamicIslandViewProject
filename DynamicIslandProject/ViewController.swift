@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func actionDynamisList(_ sender: UIButton) {
-        let dynamicView = DynamicIslandView(items: ["Title 1", "Title 2", "Title 3","Title 4", "Title 5", "Title 6"])
+        let dynamicView = DynamicIslandView(items: ["Title 1", "Title 2", "Title 3","Title 4"])
         self.view.addSubview(dynamicView)
         dynamicView.show()
     }
