@@ -25,9 +25,9 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     
     private var viewCenterX:CGFloat = UIScreen.main.bounds.width*0.5
     
-    fileprivate var xWidth:CGFloat = 80
+    fileprivate var xWidth:CGFloat = 126
     
-    fileprivate var xHeight:CGFloat = 38
+    fileprivate var xHeight:CGFloat = 37
     
     fileprivate var xTopMargin:CGFloat = 40
     
@@ -64,13 +64,22 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     
     fileprivate func setup() {
         
-        if self.items.count == 1{
-            xWidth = 135
+        let height:CGFloat = xHeight
+        //For non iphone 14 the height/width same
+        var width:CGFloat = xHeight
+        
+        //For iphone 14 nodge top margin is 11 and change width and height
+        if UIDevice.hasDynamicIsland {
+            xTopMargin = 11
+            width = xWidth
+            xWidth *= 1.5
+        }
+        //If list items is greater then one then width must m lesser
+        if self.items.count > 1{
+            xWidth = 55
         }
         
-        let height:CGFloat = xHeight
-        
-        self.frame = CGRect(x:viewCenterX-height*half, y: -xTopMargin, width: height, height:height)
+        self.frame = CGRect(x:viewCenterX-width*half, y: -xTopMargin, width: width, height:height)
         
         self.clipsToBounds = true
         self.isUserInteractionEnabled = false
@@ -82,7 +91,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         flowLayout.itemSize =  CGSize(width: xWidth, height: height)
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 1.0
-        labelsCollection = UICollectionView(frame: CGRect(x: 5, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
+        labelsCollection = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
         labelsCollection.register(DynamicCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         labelsCollection.delegate = self
         labelsCollection.dataSource = self
@@ -90,6 +99,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         labelsCollection.isScrollEnabled = true
         labelsCollection.backgroundColor = .black
         self.addSubview(labelsCollection)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -121,24 +131,38 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         if self.getSafeAreaTopMargin() > 0 {
             cons = 36
         }
-        
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [], animations: {
-            self.frame.origin.y = cons
-            self.dynamicIcland(width: self.xWidth, height:height, x: self.viewCenterX-self.xWidth*self.half, delay: 0.17) { [self] done in
-                dynamicIcland(width:height, height:height, x:self.viewCenterX-height*self.half, withHide: true, delay: 3.0) { done in
+        self.labelsCollection.alpha = 0
+        if UIDevice.hasDynamicIsland {
+            //Chanage collectionview y below the dynamic area
+            self.frame.origin.y = 11
+            labelsCollection.frame.origin.y += height-10
+            labelsCollection.frame.size.width = xWidth
+            self.xTopMargin -= 22.1
+            self.dynamicIcland(width: self.xWidth, height:height*2, x: self.viewCenterX-(self.xWidth)*self.half, delay: 0.17) { [self] done in
+                dynamicIcland(width:126, height:height, x:self.viewCenterX-(126)*self.half, withHide: true, delay: 3.0) { done in
                     
                 }
             }
-        })
+        }else{
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: [], animations: {
+                self.frame.origin.y = cons
+                self.dynamicIcland(width: self.xWidth, height:height, x: self.viewCenterX-self.xWidth*self.half, delay: 0.17) { [self] done in
+                    dynamicIcland(width:height, height:height, x:self.viewCenterX-height*self.half, withHide: true, delay: 3.0) { done in
+                        
+                    }
+                }
+            })
+        }
     }
     
     private func dynamicIcland(width: CGFloat, height: CGFloat, x: CGFloat, withHide: Bool = false, delay: CGFloat = 0.0, duration: TimeInterval = 0.6, completion: @escaping (Bool)->Void ) {
         UIView.animate(withDuration: duration, delay: delay, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: [.curveLinear], animations: { () -> Void in
+            self.labelsCollection.alpha = 1
             self.frame.size = CGSize(width: width, height: height)
             self.frame.origin.x = x
             if withHide{
-                self.viewLabel.alpha = 0
-                UIView.animate(withDuration: 0.2, delay: self.stayTime, options: [], animations: {
+                self.labelsCollection.alpha = 0
+                UIView.animate(withDuration: 0.3, delay: self.stayTime, options: [], animations: {
                     self.frame.origin.y = -self.xTopMargin
                 }, completion: {(completed) in
                     self.removeFromSuperview()
@@ -183,6 +207,11 @@ class DynamicCollectionCell: UICollectionViewCell {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+extension UIDevice {
+    static var hasDynamicIsland: Bool {
+        ["iPhone 14 Pro", "iPhone 14 Pro Max"].contains(current.name)
     }
 }
 
