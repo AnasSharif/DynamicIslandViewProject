@@ -21,7 +21,9 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     
     private var viewLabel = UILabel()
     
-    fileprivate var labelSpece:CGFloat = 10.0
+    fileprivate var labelSpece:CGFloat = 5
+    
+    fileprivate var viewMargin:CGFloat = 10.0
     
     private var viewCenterX:CGFloat = UIScreen.main.bounds.width*0.5
     
@@ -73,10 +75,12 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             xTopMargin = 11
             width = xWidth
             xWidth *= 1.5
+        }else{
+            xWidth *= 1.9
         }
         //If list items is greater then one then width must m lesser
         if self.items.count > 1{
-            xWidth = 60
+            xWidth = 55
         }
         
         self.frame = CGRect(x:viewCenterX-width*half, y: -xTopMargin, width: width, height:height)
@@ -88,10 +92,10 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
                 
         flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
-        flowLayout.itemSize =  CGSize(width: xWidth, height: height)
+        flowLayout.itemSize = CGSize(width: xWidth, height: height)
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 1.0
-        labelsCollection = UICollectionView(frame: CGRect(x: 5, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
+        labelsCollection = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: height), collectionViewLayout: flowLayout)
         labelsCollection.register(DynamicCollectionCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         labelsCollection.delegate = self
         labelsCollection.dataSource = self
@@ -121,16 +125,13 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         if self.xWidth >= screenWidth{
             self.xWidth = screenWidth-labelSpece
         }
+        
         labelsCollection.frame.size.width = xWidth
         
         labelsCollection.reloadData()
-        let height = self.frame.height
+        var height = self.frame.height
         
-        var cons:CGFloat = xTopMargin*0.35
-        
-        if self.getSafeAreaTopMargin() > 0 {
-            cons = 36
-        }
+
         self.labelsCollection.alpha = 0
         if UIDevice.hasDynamicIsland {
             //Chanage collectionview y below the dynamic area
@@ -138,20 +139,26 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             labelsCollection.frame.origin.y += height-10
             labelsCollection.frame.size.width = xWidth
             self.xTopMargin -= 22.1
-            self.dynamicIcland(width: self.xWidth+10, height:height*2, x: self.viewCenterX-(self.xWidth)*self.half, delay: 0.17) { [self] done in
+            self.dynamicIcland(width: self.xWidth, height:height*2, x: self.viewCenterX-(self.xWidth)*self.half, delay: 0.17) { [self] done in
                 dynamicIcland(width:126, height:height, x:self.viewCenterX-(126)*self.half, withHide: true, delay: 3.0) { done in
                     
                 }
             }
         }else{
-            UIView.animate(withDuration: 0.3, delay: 0.0, options: [], animations: {
-                self.frame.origin.y = cons
-                self.dynamicIcland(width: self.xWidth, height:height, x: self.viewCenterX-self.xWidth*self.half, delay: 0.17) { [self] done in
-                    dynamicIcland(width:height, height:height, x:self.viewCenterX-height*self.half, withHide: true, delay: 3.0) { done in
-                        
-                    }
+            labelsCollection.frame.origin.y += height+3
+            labelsCollection.frame.origin.x += 5
+            labelsCollection.frame.size.width = xWidth
+            self.frame.origin.y = -20
+            self.xTopMargin -= 0
+            if self.getSafeAreaTopMargin() <= 20 {
+                self.frame.origin.y = -height
+                self.xTopMargin += 8
+            }
+            self.dynamicIcland(width: self.xWidth+10, height:height*2.3, x: self.viewCenterX-(self.xWidth+10)*self.half, delay: 0.17) { [self] done in
+                dynamicIcland(width:126*1.28, height:47, x:self.viewCenterX-(126*1.28)*self.half, withHide: true, delay: 3.0) { done in
+
                 }
-            })
+            }
         }
     }
     
@@ -202,6 +209,7 @@ class DynamicCollectionCell: UICollectionViewCell {
         lable.font = UIFont.systemFont(ofSize: 15.0, weight: .semibold)
         lable.text = "Shake to undo."
         lable.textAlignment = .center
+        lable.lineBreakMode = .byTruncatingHead
 //        lable.backgroundColor = .green
 //        lable.layer.masksToBounds = true
 //        lable.layer.cornerRadius = 8

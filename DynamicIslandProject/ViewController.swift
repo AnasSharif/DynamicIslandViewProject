@@ -15,13 +15,13 @@ class ViewController: UIViewController {
     }
 
     @IBAction func actionDynamisList(_ sender: UIButton) {
-        let dynamicView = DynamicIslandView(items: ["Title 1", "Title 2", "Title 3","Title 4"])
+        let dynamicView = DynamicIslandView(items: ["..Title 1", "Title 2", "Title 3","Title 4","Title 5", "Title 6", "Title 7", ])
         self.view.addSubview(dynamicView)
         dynamicView.show()
     }
     
     @IBAction func actionDynamicIslandBtn(_ sender: UIButton) {
-        let dynamicView = DynamicIslandView(items: ["SHAKE TO UNDO"])
+        let dynamicView = DynamicIslandView(items: ["Shake To Undo"])
         self.view.addSubview(dynamicView)
         dynamicView.show()
     }
