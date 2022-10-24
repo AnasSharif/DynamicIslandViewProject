@@ -8,16 +8,26 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var linkTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.linkTextField.text = "5"
     }
 
     @IBAction func actionDynamisList(_ sender: UIButton) {
-        let dynamicView = DynamicIslandView(items: ["..Title 1", "Title 2", "Title 3","Title 4","Title 5", "Title 6", "Title 7", ])
-        self.view.addSubview(dynamicView)
-        dynamicView.show()
+        if let text = linkTextField.text, let links = Int(text) {
+            
+            var list: [String] = []
+            for index in 1...links {
+                list.append("Title \(index)")
+            }
+            let dynamicView = DynamicIslandView(items: list)
+            self.view.addSubview(dynamicView)
+            dynamicView.show()
+        }
+        self.linkTextField.endEditing(true)
     }
     
     @IBAction func actionDynamicIslandBtn(_ sender: UIButton) {

@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -18,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxl-xi-NVT">
-                                <rect key="frame" x="102" y="404.66666666666669" width="186" height="35"/>
+                                <rect key="frame" x="102" y="405" width="186" height="34.333333333333314"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Show Dynamic Island"/>
                                 <connections>
@@ -26,9 +25,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h4t-ma-GNo">
-                                <rect key="frame" x="102" y="457.66666666666669" width="186" height="35"/>
+                                <rect key="frame" x="109.66666666666669" y="519.33333333333337" width="171" height="35"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="186" id="SGJ-fp-1gE"/>
                                     <constraint firstAttribute="height" constant="35" id="lK3-hA-wSm"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
@@ -37,21 +35,45 @@
                                     <action selector="actionDynamisList:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DoO-bC-9Wy"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8G5-Yp-clM">
+                                <rect key="frame" x="102" y="454.33333333333331" width="186" height="57"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of links" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CjM-G8-sj5">
+                                        <rect key="frame" x="0.0" y="0.0" width="186" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0Ei-Aj-NHR">
+                                        <rect key="frame" x="0.0" y="17" width="186" height="40"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="186" id="BdI-PJ-waK"/>
+                                    <constraint firstAttribute="height" constant="57" id="Dpd-Ac-WAs"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="oxl-xi-NVT" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="BVE-I1-Nil"/>
-                            <constraint firstItem="h4t-ma-GNo" firstAttribute="top" secondItem="oxl-xi-NVT" secondAttribute="bottom" constant="18.329999999999998" id="DrR-Xq-sMH"/>
                             <constraint firstItem="oxl-xi-NVT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wbf-d3-TeQ"/>
                             <constraint firstItem="h4t-ma-GNo" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fhn-gh-LUE"/>
-                            <constraint firstItem="h4t-ma-GNo" firstAttribute="top" secondItem="oxl-xi-NVT" secondAttribute="bottom" constant="18.329999999999998" id="zHW-5k-bvO"/>
+                            <constraint firstItem="8G5-Yp-clM" firstAttribute="top" secondItem="oxl-xi-NVT" secondAttribute="bottom" constant="15.33" id="jOR-zy-xwb"/>
+                            <constraint firstItem="8G5-Yp-clM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vSB-r1-Xcb"/>
+                            <constraint firstItem="h4t-ma-GNo" firstAttribute="top" secondItem="oxl-xi-NVT" secondAttribute="bottom" constant="80" id="zHW-5k-bvO"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="linkTextField" destination="0Ei-Aj-NHR" id="Tas-gX-Tug"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-112" y="4"/>
+            <point key="canvasLocation" x="-112.30769230769231" y="3.5545023696682461"/>
         </scene>
     </scenes>
     <resources>

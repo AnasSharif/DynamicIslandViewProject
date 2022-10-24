@@ -23,15 +23,19 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     
     fileprivate var labelSpece:CGFloat = 5
     
-    fileprivate var viewMargin:CGFloat = 10.0
+    fileprivate var viewMargin:CGFloat = 25.0
     
     private var viewCenterX:CGFloat = UIScreen.main.bounds.width*0.5
+    
+    fileprivate let xFixWidth:CGFloat = 126
     
     fileprivate var xWidth:CGFloat = 126
     
     fileprivate var xHeight:CGFloat = 37
     
     fileprivate var xTopMargin:CGFloat = 40
+    
+    fileprivate var xCvPadding:CGFloat = 20
     
     var items = ["Title 1","Title 2","Title 3"]
             
@@ -80,7 +84,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         }
         //If list items is greater then one then width must m lesser
         if self.items.count > 1{
-            xWidth = 55
+            xWidth = 60
         }
         
         self.frame = CGRect(x:viewCenterX-width*half, y: -xTopMargin, width: width, height:height)
@@ -103,6 +107,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         labelsCollection.isScrollEnabled = true
         labelsCollection.backgroundColor = .black
         self.addSubview(labelsCollection)
+        self.moveToCell()
         
     }
     
@@ -112,7 +117,13 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! DynamicCollectionCell
-        cell.lable.text = "\(items[indexPath.row])"
+        var linkText = items[indexPath.row]
+        if self.items.count > 1{
+            if self.items.count != (indexPath.row+1){
+                linkText = "\(linkText) ►"
+            }
+        }
+        cell.lable.text = linkText
         cell.frame.size.width = xWidth*CGFloat(indexPath.row)
         return cell
     }
@@ -123,13 +134,13 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         self.xWidth *= CGFloat(items.count)
         
         if self.xWidth >= screenWidth{
-            self.xWidth = screenWidth-labelSpece
+            self.xWidth = screenWidth-viewMargin
         }
         
         labelsCollection.frame.size.width = xWidth
         
         labelsCollection.reloadData()
-        var height = self.frame.height
+        let height = self.frame.height
         
 
         self.labelsCollection.alpha = 0
@@ -140,13 +151,13 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             labelsCollection.frame.size.width = xWidth
             self.xTopMargin -= 22.1
             self.dynamicIcland(width: self.xWidth, height:height*2, x: self.viewCenterX-(self.xWidth)*self.half, delay: 0.17) { [self] done in
-                dynamicIcland(width:126, height:height, x:self.viewCenterX-(126)*self.half, withHide: true, delay: 3.0) { done in
+                dynamicIcland(width:xFixWidth, height:height, x:self.viewCenterX-(xFixWidth)*self.half, withHide: true, delay: 3.0) { done in
                     
                 }
             }
         }else{
-            labelsCollection.frame.origin.y += height+3
-            labelsCollection.frame.origin.x += 5
+            labelsCollection.frame.origin.y += height+4
+            labelsCollection.frame.origin.x += xCvPadding*half
             labelsCollection.frame.size.width = xWidth
             self.frame.origin.y = -20
             self.xTopMargin -= 0
@@ -154,8 +165,8 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
                 self.frame.origin.y = -height
                 self.xTopMargin += 8
             }
-            self.dynamicIcland(width: self.xWidth+10, height:height*2.3, x: self.viewCenterX-(self.xWidth+10)*self.half, delay: 0.17) { [self] done in
-                dynamicIcland(width:126*1.28, height:47, x:self.viewCenterX-(126*1.28)*self.half, withHide: true, delay: 3.0) { done in
+            self.dynamicIcland(width: self.xWidth+xCvPadding, height:height*2.3, x: self.viewCenterX-(self.xWidth+xCvPadding)*self.half, delay: 0.17) { [self] done in
+                dynamicIcland(width:xFixWidth*1.28, height:47, x:self.viewCenterX-(xFixWidth*1.28)*self.half, withHide: true, delay: 3.0) { done in
 
                 }
             }
@@ -192,6 +203,11 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             topPadding = (window?.safeAreaInsets.top)!
         }
         return topPadding
+    }
+    
+    func moveToCell() {
+        let indexPath = IndexPath(row: self.items.count-1, section: 0)
+        labelsCollection.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.right, animated: false)
     }
 
 }
