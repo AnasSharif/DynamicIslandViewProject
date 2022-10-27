@@ -19,10 +19,10 @@ class ViewController: UIViewController {
     @IBAction func actionDynamisList(_ sender: UIButton) {
         if let text = linkTextField.text, let links = Int(text) {
             
-            var list: [String] = []
-            for index in 1...links {
-                list.append("Title \(index)")
-            }
+            var list: [String] = ["Contact", " Events", " Groups", "Description"]
+//            for index in 1...links {
+//                list.append("\(list[index])")
+//            }
             let dynamicView = DynamicIslandView(items: list)
             self.view.addSubview(dynamicView)
             dynamicView.show()

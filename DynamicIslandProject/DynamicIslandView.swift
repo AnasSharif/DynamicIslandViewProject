@@ -35,7 +35,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     
     fileprivate var xTopMargin:CGFloat = 40
     
-    fileprivate var xCvPadding:CGFloat = 20
+    fileprivate var xCvPadding:CGFloat = 30
     
     var items = ["Title 1","Title 2","Title 3"]
             
@@ -84,7 +84,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         }
         //If list items is greater then one then width must m lesser
         if self.items.count > 1{
-            xWidth = 60
+            xWidth = 72
         }
         
         self.frame = CGRect(x:viewCenterX-width*half, y: -xTopMargin, width: width, height:height)
@@ -117,10 +117,13 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! DynamicCollectionCell
-        var linkText = items[indexPath.row]
+        let linkText = items[indexPath.row]
         if self.items.count > 1{
             if self.items.count != (indexPath.row+1){
-                linkText = "\(linkText) ►"
+                cell.linkImage.isHidden = false
+                cell.lable.textAlignment = .left
+            }else{
+                cell.linkImage.isHidden = true
             }
         }
         cell.lable.text = linkText
@@ -215,6 +218,7 @@ class DynamicIslandView: UIView, UICollectionViewDelegate, UICollectionViewDataS
 class DynamicCollectionCell: UICollectionViewCell {
     
     var lable: UILabel!
+    var linkImage: UIImageView!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -225,11 +229,22 @@ class DynamicCollectionCell: UICollectionViewCell {
         lable.font = UIFont.systemFont(ofSize: 15.0, weight: .semibold)
         lable.text = "Shake to undo."
         lable.textAlignment = .center
-        lable.lineBreakMode = .byTruncatingHead
+        lable.lineBreakMode = .byTruncatingTail
 //        lable.backgroundColor = .green
-//        lable.layer.masksToBounds = true
-//        lable.layer.cornerRadius = 8
+        lable.layer.masksToBounds = true
+        lable.layer.cornerRadius = 8
+        
+       
+        
+        linkImage = UIImageView(frame: CGRect(x: frame.width-12, y: frame.height*0.37, width: frame.width*0.15, height: frame.height*0.3))
+        linkImage.image = UIImage(named: "link")
+        linkImage.image = linkImage.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        linkImage.tintColor = .white
+        linkImage.isHidden = true
+       
         self.addSubview(lable)
+        self.addSubview(linkImage)
+       
     }
 
     required init?(coder aDecoder: NSCoder) {
