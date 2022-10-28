@@ -10,19 +10,21 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var linkTextField: UITextField!
+    
+    private let list = ["Contacts", "Descriptions" ,"Events", "Groups", "Tasks", "Category"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.linkTextField.text = "5"
+        self.linkTextField.text = "1"
     }
 
     @IBAction func actionDynamisList(_ sender: UIButton) {
-        if let text = linkTextField.text, let links = Int(text) {
+        if let text = linkTextField.text, let count = Int(text) {
             
-            var list: [String] = ["Contact", " Events", " Groups", "Description"]
-//            for index in 1...links {
-//                list.append("\(list[index])")
-//            }
+            var list: [String] = []
+            for i in 0...count-1 {
+                list.append(self.list[i])
+            }
             let dynamicView = DynamicIslandView(items: list)
             self.view.addSubview(dynamicView)
             dynamicView.show()
